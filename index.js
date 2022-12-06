@@ -48,11 +48,21 @@ app.get('/something', (req, res) => {
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 const jsonParser = bodyParser.json();
+
 app.post('/pokemon/insert', jsonParser, (req, res) => {
     const body = req.body;
+    //on se connecte à la DB MongoDB
+    const dbConnect = dbo.getDb();
     console.log('Got body:', body);
     dbConnect
-    .collection("pokemon")
-    .insert(...body)
-    res.json(body);
+        .collection("pokemon")
+        .insertOne(body)
+        .then(function (err, result) {
+            if (err) {
+                res.json(err);
+            } else {
+                res.json(result);
+            }
+        });
+
 });

@@ -116,16 +116,20 @@ app.post('/pokedex/insert', jsonParser, (req, res) => {
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
     console.log('Got body_insert:', body);
-    dbConnect
-        .collection("pokedex")
-        .insertOne(body)
-        .then(function (err, result) {
-            if (err) {
-                res.json(err);  
-            }else {
-                res.json(result);
-            }
-        });
+    if (body.name in dbConnect.collection("pokemon").find({name:{}})) {
+        dbConnect
+            .collection("pokedex")
+            .insertOne(body)
+            .then(function (err, result) {
+                if (err) {
+                    res.json(err);  
+                }else {
+                    res.json(result);
+                }
+            });
+    }else{
+        console.log("error, le pokemon n'existe pas");
+    }
 });
 
 app.delete('/pokedex/delete', jsonParser, (req, res) => {

@@ -36,15 +36,6 @@ app.get("/pokemon/list", function (req, res) {
       */
       
 });
-  
-app.get('/something', (req, res) => {
-    const color1 = req.query.color1;
-    const color2 = req.query.color2;
-    /* 
-    Traitement du code ensuite...
-    */
-})
-
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 const jsonParser = bodyParser.json();
@@ -53,7 +44,7 @@ app.post('/pokemon/insert', jsonParser, (req, res) => {
     const body = req.body;
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
-    console.log('Got body:', body);
+    console.log('Got body_insert:', body);
     dbConnect
         .collection("pokemon")
         .insertOne(body)
@@ -71,7 +62,7 @@ app.delete('/pokemon/delete', jsonParser, (req, res) => {
     const body = req.body;
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
-    console.log('Got body:', body);
+    console.log('Got body_delete:', body);
     dbConnect
         .collection("pokemon")
         .deleteOne(body)
@@ -89,19 +80,11 @@ app.post('/pokemon/update', jsonParser, (req, res) => {
     const body = req.body;
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
-    console.log('Got body:', body);
-    dbConnect
-        .collection("pokemon")
-        .updateOne(body)
-        .then(function (err, result) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json(result);
-            }
-        });
-
-});
+    filter = {name: body.pokemonupdate}
+    set = {$set:{name:body.name}}
+    dbConnect.collection("pokemon").updateMany(filter,set);
+    res.json(body);
+  });
 
 
 //pokedex
@@ -132,25 +115,24 @@ app.post('/pokedex/insert', jsonParser, (req, res) => {
     const body = req.body;
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
-    console.log('Got body:', body);
+    console.log('Got body_insert:', body);
     dbConnect
         .collection("pokedex")
         .insertOne(body)
         .then(function (err, result) {
             if (err) {
-                res.json(err);
-            } else {
+                res.json(err);  
+            }else {
                 res.json(result);
             }
         });
-
 });
 
 app.delete('/pokedex/delete', jsonParser, (req, res) => {
     const body = req.body;
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
-    console.log('Got body:', body);
+    console.log('Got body_delete:', body);
     dbConnect
         .collection("pokedex")
         .deleteOne(body)

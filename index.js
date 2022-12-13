@@ -78,14 +78,15 @@ app.delete('/pokemon/delete', jsonParser, (req, res) => {
 });
 
 app.post('/pokemon/update', jsonParser, (req, res) => {
-    const body = req.body;
-    //on se connecte à la DB MongoDB
-    const dbConnect = dbo.getDb();
-    filter = {name: body.pokemonupdate}
-    set = {$set:{name:body.name}}
-    dbConnect.collection("pokemon").updateMany(filter,set);
-    res.json(body);
-  });
+  const body = req.body;
+  const dbConnect = dbo.getDb();
+  pokemontoupdate = {name:body.pokemontoupdate}
+  set = {name:body.name}
+  dbConnect
+  .collection("pokemon")
+  .updateMany(pokemontoupdate,set)
+  res.json(body);
+});
 
 
 //pokedex

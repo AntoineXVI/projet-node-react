@@ -47,15 +47,15 @@ app.post('/pokemon/insert', jsonParser, (req, res) => {
     const dbConnect = dbo.getDb();
     console.log('Got body_insert:', body);
     dbConnect
-        .collection("pokemon")
-        .insertMany(body)
-        .then(function (err, result) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json(result);
-            }
-        });
+      .collection("pokemon")
+      .insertMany(body)
+      .then(function (err, result) {
+          if (err) {
+              res.json(err);
+          } else {
+              res.json(result);
+          }
+      });
 
 });
 
@@ -65,15 +65,15 @@ app.delete('/pokemon/delete', jsonParser, (req, res) => {
     const dbConnect = dbo.getDb();
     console.log('Got body_delete:', body);
     dbConnect
-        .collection("pokemon")
-        .deleteOne(body)
-        .then(function (err, result) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json(result);
-            }
-        });
+      .collection("pokemon")
+      .deleteOne(body)
+      .then(function (err, result) {
+          if (err) {
+              res.json(err);
+          } else {
+              res.json(result);
+          }
+      });
 
 });
 
@@ -84,7 +84,7 @@ app.post('/pokemon/update', jsonParser, (req, res) => {
   set = {name:body.name}
   dbConnect
   .collection("pokemon")
-  .updateMany(pokemontoupdate,set)
+  .updateOne(pokemontoupdate,{$set:set});
   res.json(body);
 });
 
@@ -117,7 +117,6 @@ app.post('/pokedex/insert', jsonParser, (req, res) => {
     //on se connecte à la DB MongoDB
     const dbConnect = dbo.getDb();
     console.log('Got body_insert:', body);
-    //if (body.name in dbConnect.collection("pokemon").find({name:{}})) {
     dbConnect
       .collection("pokedex")
       .insertOne(body)
@@ -128,10 +127,7 @@ app.post('/pokedex/insert', jsonParser, (req, res) => {
               res.json(result);
           }
       });
-   //}else{
-        //console.log("error, le pokemon n'existe pas");
-    }
-);
+    });
 
 app.delete('/pokedex/delete', jsonParser, (req, res) => {
     const body = req.body;
